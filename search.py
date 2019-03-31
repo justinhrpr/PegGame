@@ -237,6 +237,7 @@ def breadth_first_graph_search(problem):
     single line as below:
     return graph_search(problem, FIFOQueue())
     """
+    solutions = []
     node = Node(problem.initial)
     if problem.goal_test(node.state):
         return node
@@ -248,9 +249,9 @@ def breadth_first_graph_search(problem):
         for child in node.expand(problem):
             if child.state not in explored and child not in frontier:
                 if problem.goal_test(child.state):
-                    return child
+                    solutions.append(child)
                 frontier.append(child)
-    return None
+    return solutions
 
 
 def best_first_graph_search(problem, f):

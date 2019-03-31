@@ -6,23 +6,6 @@ class PegGame(search.Problem):
     
     # board has 15 holes, 1 means a peg is in the hole
     init_board = (1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)   
-    # goal states are when only one peg remains
-    # found a better way. see goal_test()
-    # goals = [(1,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-    #          (0,1,0,0,0,0,0,0,0,0,0,0,0,0,0),   
-    #          (0,0,1,0,0,0,0,0,0,0,0,0,0,0,0),   
-    #          (0,0,0,1,0,0,0,0,0,0,0,0,0,0,0),   
-    #          (0,0,0,0,1,0,0,0,0,0,0,0,0,0,0),   
-    #          (0,0,0,0,0,1,0,0,0,0,0,0,0,0,0),   
-    #          (0,0,0,0,0,0,1,0,0,0,0,0,0,0,0),   
-    #          (0,0,0,0,0,0,0,1,0,0,0,0,0,0,0),   
-    #          (0,0,0,0,0,0,0,0,1,0,0,0,0,0,0),   
-    #          (0,0,0,0,0,0,0,0,0,1,0,0,0,0,0),   
-    #          (0,0,0,0,0,0,0,0,0,0,1,0,0,0,0),   
-    #          (0,0,0,0,0,0,0,0,0,0,0,1,0,0,0),   
-    #          (0,0,0,0,0,0,0,0,0,0,0,0,1,0,0),   
-    #          (0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),   
-    #          (0,0,0,0,0,0,0,0,0,0,0,0,0,0,1)]
 
     '''initialize the game. need to know the empty location'''
     def __init__(self, empty):
@@ -39,7 +22,7 @@ class PegGame(search.Problem):
            1. must be a peg in the hole 
            2. must be a peg next to the hole 
            3. must be open space for peg to land'''
-        print('current board: ',state)
+        #print('current board: ',state)
         a = [] # actions
         # check for action at every hole
         for hole,peg in enumerate(state):
@@ -50,7 +33,7 @@ class PegGame(search.Problem):
                 neighbors = self.valid_actions(hole, state)
                 for n in neighbors:
                     a.append("%s jump %s to %s" % (hole,n[0],n[1]))
-        print('possible actions: ',a,'\n')
+        #print('possible actions: ',a,'\n')
         return a
 
     def valid_actions(self,hole, state):
@@ -132,13 +115,23 @@ class PegGame(search.Problem):
 
 
 def main():
-    # setup game
-    game = PegGame(10)
-    #print('initial board',game.board)
-    # solved = search.depth_first_graph_search(game)
-    solved = search.breadth_first_graph_search(game)
-    [print(action) for action in solved.solution()]
+    '''run the game for each starting position. 
+       print solutions for each position'''
+    for start_position in range(15):
+        # setup game
+        game = PegGame(start_position)
+        #print('initial board',game.board)
+        #solved = search.depth_first_graph_search(game)
+        solved = search.breadth_first_graph_search(game)
 
+        print('\n***************starting position %i******************' % start_position) 
+        print('number of solutions: %i\n' % len(solved))
+        for index, solution in enumerate(solved):
+            index = index + 1
+            print('solution %i' % index)
+            for action in solution.solution():
+                print(action)
+            print('\n')
 
 if __name__ == '__main__':
     main()
